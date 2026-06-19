@@ -21,6 +21,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     
     private final JwtUtil jwtUtil;
 
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
         HttpServletResponse response,
         FilterChain filterChain
@@ -33,10 +34,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-
+        //System.out.println("Token valid? " + jwtUtil.isTokenValid(token));
+        
         if(jwtUtil.isTokenValid(token)) {
             String email = jwtUtil.extractEmail(token);
             String role = jwtUtil.extractRole(token);
+            //System.out.println("Email: " + email + " | Role: " + role);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 email,
